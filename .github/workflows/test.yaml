@@ -9,21 +9,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Generate a project from the template (so CI tests the template, not itself)
-      - name: Generate project with Cookiecutter
-        run: |
-          pip install cookiecutter
-          cookiecutter . --no-input project_slug=test_dash project_name="CI Test" description="Check template"
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
+          python-version: '3.11'
 
-      - name: Install deps & run tests
-        working-directory: test_dash
+      - name: Install dependencies
         run: |
-          make setup
-          make fmt          # ensure formatters don't change anything
-make test
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          python test_f_pawn_fates.py
 
