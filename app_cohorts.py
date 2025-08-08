@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Cohort-focused Streamlit app for chess game analysis."""
 
-import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 from plotly.subplots import make_subplots
@@ -282,8 +281,16 @@ def show_cohort_management():
         )
 
     if cohort_data:
-        df = pd.DataFrame(cohort_data)
-        st.dataframe(df, use_container_width=True)
+        # Display cohort info with metrics instead of DataFrame to avoid PyArrow issues
+        for cohort in cohort_data:
+            with st.expander(f"{cohort['Status']} {cohort['ID']} ({cohort['Progress']})", expanded=False):
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("Target Games", cohort["Target Games"])
+                with col2:
+                    st.metric("Collected", cohort["Collected"])
+                with col3:
+                    st.write(f"**Tags:** {cohort['Tags']}")
     else:
         st.info("No cohorts configured.")
 
