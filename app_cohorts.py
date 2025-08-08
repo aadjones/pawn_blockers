@@ -208,32 +208,35 @@ def main():
 
     # Statistical details
     with st.expander("📋 Statistical Details"):
-        stats_df = pd.DataFrame(
-            [
-                {"Statistic": "Count", cohort1_id: len(result.cohort1_values), cohort2_id: len(result.cohort2_values)},
-                {
-                    "Statistic": "Mean",
-                    cohort1_id: f"{result.summary_stats['cohort1_mean']:.3f}",
-                    cohort2_id: f"{result.summary_stats['cohort2_mean']:.3f}",
-                },
-                {
-                    "Statistic": "Median",
-                    cohort1_id: f"{result.summary_stats['cohort1_median']:.3f}",
-                    cohort2_id: f"{result.summary_stats['cohort2_median']:.3f}",
-                },
-                {
-                    "Statistic": "Std Dev",
-                    cohort1_id: f"{result.summary_stats['cohort1_std']:.3f}",
-                    cohort2_id: f"{result.summary_stats['cohort2_std']:.3f}",
-                },
-                {
-                    "Statistic": "Effect Size (Cohen's d)",
-                    cohort1_id: f"{result.summary_stats.get('effect_size', 0):.3f}",
-                    cohort2_id: "",
-                },
-            ]
-        )
-        st.dataframe(stats_df, use_container_width=True)
+        # Use metrics instead of dataframe to avoid PyArrow issues
+        st.write("**Statistical Summary:**")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("Count", f"{len(result.cohort1_values)} vs {len(result.cohort2_values)}")
+
+        with col2:
+            st.metric(
+                "Mean", f"{result.summary_stats['cohort1_mean']:.3f} vs {result.summary_stats['cohort2_mean']:.3f}"
+            )
+
+        with col3:
+            st.metric("Effect Size", f"{result.summary_stats.get('effect_size', 0):.3f}")
+
+        # Additional stats in a second row
+        col4, col5, col6 = st.columns(3)
+
+        with col4:
+            st.metric(
+                "Median",
+                f"{result.summary_stats['cohort1_median']:.3f} vs {result.summary_stats['cohort2_median']:.3f}",
+            )
+
+        with col5:
+            st.metric(
+                "Std Dev", f"{result.summary_stats['cohort1_std']:.3f} vs {result.summary_stats['cohort2_std']:.3f}"
+            )
 
     # Cohort management link
     st.markdown("---")
