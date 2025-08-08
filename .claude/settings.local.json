@@ -9,7 +9,8 @@
       "WebFetch(domain:lichess.org)",
       "WebFetch(domain:theweekinchess.com)",
       "Bash(streamlit run:*)",
-      "Bash(make:*)"
+      "Bash(make:*)",
+      "Bash(python test_f_pawn_fates.py)"
     ],
     "deny": []
   }

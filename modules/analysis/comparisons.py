@@ -95,6 +95,8 @@ def analyze_game_collection(
                 "white_exposure": white_exp,
                 "black_exposure": black_exp,
                 "plies_analyzed": plies_analyzed,
+                "white_f_pawn_fates": summary["white"]["f_pawn_fates"],
+                "black_f_pawn_fates": summary["black"]["f_pawn_fates"],
                 **metadata,
             }
 

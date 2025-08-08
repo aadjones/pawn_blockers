@@ -129,4 +129,53 @@ class PawnBlockingMetric(AbstractMetric):
 
             viz_data["per_file_data"][cohort_id] = file_data
 
+        # Aggregate F-pawn fates
+        viz_data["f_pawn_fates"] = {}
+        for cohort_df, cohort_id in [(cohort1_df, cohort1_id), (cohort2_df, cohort2_id)]:
+            aggregated_fates = {
+                "never_blocked": 0,
+                "push_f3": 0,
+                "push_f4": 0,
+                "capture_e3": 0,
+                "capture_g3": 0,
+                "temporary_block": 0,
+                "permanent_block": 0,
+            }
+
+            # Combine fates from both white and black columns
+            for color_prefix in ["white", "black"]:
+                fate_col = f"{color_prefix}_f_pawn_fates"
+                if fate_col in cohort_df.columns:
+                    for row_idx, row in cohort_df.iterrows():
+                        fates = row[fate_col]
+                        if fates:
+                            # Handle both dict and string representations
+                            if isinstance(fates, str):
+                                try:
+                                    import ast
+
+                                    fates = ast.literal_eval(fates)
+                                except (ValueError, SyntaxError):
+                                    print(f"DEBUG: Parse error on row {row_idx}: {fates}")
+                                    continue
+                            elif not isinstance(fates, dict):
+                                print(f"DEBUG: Row {row_idx} has unexpected type {type(fates)}: {fates}")
+                                continue
+
+                            # Check if all expected keys are present
+                            missing_keys = set(aggregated_fates.keys()) - set(fates.keys())
+                            if missing_keys:
+                                print(f"DEBUG: Row {row_idx} missing keys: {missing_keys}")
+                                print(f"DEBUG: Row {row_idx} has keys: {list(fates.keys())}")
+                                # Add missing keys with 0 count
+                                for key in missing_keys:
+                                    fates[key] = 0
+
+                            # Now we have a dict with all keys
+                            for fate, count in fates.items():
+                                if fate in aggregated_fates:
+                                    aggregated_fates[fate] += count
+
+            viz_data["f_pawn_fates"][cohort_id] = aggregated_fates
+
         return viz_data

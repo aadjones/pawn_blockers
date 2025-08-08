@@ -9,6 +9,7 @@ from plotly.subplots import make_subplots
 from modules.cohorts import CohortManager
 from modules.metrics import get_registry
 from modules.viz import comparison_boxplot, create_simple_board_heatmap
+from modules.viz.f_pawn_charts import plot_f_pawn_fates_stacked
 
 # Configure page
 st.set_page_config(page_title="Pawn Blockers - Cohort Analysis", page_icon="♟️", layout="wide")
@@ -193,6 +194,17 @@ def main():
                 st.plotly_chart(fig2, use_container_width=True)
 
             st.caption(f"📏 Shared scale: {vmin:.3f} to {vmax:.3f}")
+
+    # F-pawn fate analysis
+    if "f_pawn_fates" in result.visualization_data:
+        st.subheader("🎯 F-pawn Fate Analysis")
+        st.markdown("**What happens to F-pawns after they get blocked?**")
+
+        f_pawn_fates = result.visualization_data["f_pawn_fates"]
+        cohort1_fates = f_pawn_fates.get(cohort1_id, {})
+        cohort2_fates = f_pawn_fates.get(cohort2_id, {})
+
+        plot_f_pawn_fates_stacked(cohort1_fates, cohort2_fates, cohort1_id, cohort2_id)
 
     # Statistical details
     with st.expander("📋 Statistical Details"):
