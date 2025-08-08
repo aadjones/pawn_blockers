@@ -1,0 +1,24 @@
+id: twic_strong
+name: Strong Human Games (TWIC 2000+)
+description: Tournament and strong amateur games from The Week in Chess
+type: twic
+data_sources:
+- type: twic
+  min_rating: 2000
+  max_issues: 20
+  max_games: 1000
+target_games: 1000
+min_rating: 2000
+max_rating: null
+time_controls: null
+variants: null
+player_patterns: null
+engine_detection: true
+max_plies: 24
+min_exposure: 64
+tags:
+- human
+- strong
+- tournament
+- twic
+priority: 8

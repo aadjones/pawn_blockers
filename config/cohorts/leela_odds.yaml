@@ -1,0 +1,30 @@
+data_sources:
+- max_games: 600
+  type: lichess_user
+  username: LeelaRookOdds
+- max_games: 300
+  type: lichess_user
+  username: LeelaKnightOdds
+- max_games: 200
+  type: lichess_user
+  username: LeelaQueenOdds
+description: Games where Leela plays with material handicap
+engine_detection: true
+id: leela_odds
+max_plies: 24
+max_rating: null
+min_exposure: 64
+min_rating: null
+name: Leela Odds Games
+player_patterns:
+- leela
+- lc0
+priority: 10
+tags:
+- ai
+- handicap
+- demo
+target_games: 1000
+time_controls: null
+type: lichess_user
+variants: null
